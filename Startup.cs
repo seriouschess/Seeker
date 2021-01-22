@@ -1,3 +1,5 @@
+using System.Net.Http;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -9,6 +11,7 @@ namespace Seeker
 {
     public class Startup
     {
+        public static HttpClient AppHttpClient {get;} = new HttpClient();
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -19,7 +22,7 @@ namespace Seeker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddHttpClient();
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
