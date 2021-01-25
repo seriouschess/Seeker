@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Seeker.Configuration;
 
 namespace Seeker
 {
@@ -15,6 +16,7 @@ namespace Seeker
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            ConfSettings.Configuration = Configuration;
         }
 
         public IConfiguration Configuration { get; }

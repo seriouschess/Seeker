@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Seeker.Configuration;
 
 namespace Seeker.Controllers
 {
@@ -24,6 +25,7 @@ namespace Seeker.Controllers
         public async Task<Object> GetAsync()
         {
             HttpClient client = _clientFactory.CreateClient();
+            System.Console.WriteLine(ConfSettings.Configuration["test"]);
             var response = await client.GetAsync("https://pokeapi.co/api/v2/pokemon/gengar");
             return response;
         }
