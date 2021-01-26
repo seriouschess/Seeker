@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Seeker.Configuration;
+using Seeker.dtos;
+using Seeker.ServerClasses;
 
 namespace Seeker.Controllers
 {
@@ -11,23 +15,19 @@ namespace Seeker.Controllers
     [Route("[controller]")]
     public class Redditseeker : ControllerBase
     {
-        private IHttpClientFactory _clientFactory;
+        private RedditApiClient _redditApiClient;
 
         private readonly ILogger<Redditseeker> _logger;
 
         public Redditseeker(ILogger<Redditseeker> logger, IHttpClientFactory clientFactory)
         {
             _logger = logger;
-            _clientFactory = clientFactory;
+            _redditApiClient = new RedditApiClient(clientFactory);
         }
 
         [HttpGet]
-        public async Task<Object> GetAsync()
-        {
-            HttpClient client = _clientFactory.CreateClient();
-            System.Console.WriteLine(ConfSettings.Configuration["test"]);
-            var response = await client.GetAsync("https://pokeapi.co/api/v2/pokemon/gengar");
-            return response;
+        public string GetAuthToken(){
+            return _redditApiClient.GetAuthToken();
         }
     }
 }
