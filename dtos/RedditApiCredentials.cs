@@ -10,5 +10,6 @@ namespace Seeker.dtos
         public readonly string grant_type = "password";
         public readonly string username = ConfSettings.Configuration["RedditApiCredentials:Username"];
         public readonly string password = ConfSettings.Configuration["RedditApiCredentials:Password"];
+        public readonly string user_agent = ConfSettings.Configuration["RedditApiCredentials:Useragent"];
     }
 }

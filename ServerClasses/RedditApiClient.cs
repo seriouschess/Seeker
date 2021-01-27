@@ -20,8 +20,6 @@ namespace Seeker.ServerClasses
             HttpClient client = _clientFactory.CreateClient();
 
             var values = new List<KeyValuePair<string, string>>();
-            System.Console.WriteLine(_apiCredentials.username);
-            System.Console.WriteLine(_apiCredentials.password);
             values.Add(new KeyValuePair<string, string>("grant_type", "password"));
             values.Add(new KeyValuePair<string, string>("username", _apiCredentials.username));
             values.Add(new KeyValuePair<string, string>("password", _apiCredentials.password));
@@ -43,7 +41,6 @@ namespace Seeker.ServerClasses
             response.EnsureSuccessStatusCode();
             HttpContent responseBody = response.Content;
             string jsonContent = responseBody.ReadAsStringAsync().Result;
-            System.Console.WriteLine(jsonContent);
             oAuthToken token = JsonConvert.DeserializeObject<oAuthToken>(jsonContent);
             System.Console.WriteLine(token.access_token);
             if(token.access_token != null){
@@ -51,7 +48,20 @@ namespace Seeker.ServerClasses
             }else{
                 throw new System.Exception("Unexpected API behavior: "+jsonContent);
             }
-            
+        }
+
+        public string GetRedditUserData(){
+            HttpClient client = _clientFactory.CreateClient();
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://oauth.reddit.com/api/v1/me");
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "513552766802-_4586ASfOG7h8XdY78azwL1DwAF2-w");
+            client.DefaultRequestHeaders.Add("User-Agent",  _apiCredentials.user_agent);
+
+            var task = client.SendAsync(requestMessage);
+            var response = task.Result;
+            //response.EnsureSuccessStatusCode();
+            HttpContent responseBody = response.Content;
+            string jsonContent = responseBody.ReadAsStringAsync().Result;
+            return jsonContent;
         }
     }
 }

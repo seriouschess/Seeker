@@ -236,3 +236,6 @@ node_modules/
 
 #secretkeys
 appsettings.json
+
+#vscode
+.vscode

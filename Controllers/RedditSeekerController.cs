@@ -29,5 +29,11 @@ namespace Seeker.Controllers
         public string GetAuthToken(){
             return _redditApiClient.GetAuthToken();
         }
+
+        [HttpGet]
+        [Route("account")]
+        public string GetRedditUserData(){
+            return _redditApiClient.GetRedditUserData();
+        }
     }
 }
