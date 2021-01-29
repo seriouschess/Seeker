@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Seeker.dtos;
 
@@ -25,6 +25,7 @@ namespace Seeker.ServerClasses
             _clientFactory = clientFactory;
         }
 
+        //oAuth2 Token Retrieval
         public string GetAuthToken(){
             if( _token == null || _refreshTime < DateTime.Now.AddHours(-1) ){
                 _refreshTime = DateTime.Now;
@@ -40,25 +41,23 @@ namespace Seeker.ServerClasses
         private string RequestAuthToken(){
                 HttpClient client = _clientFactory.CreateClient();
 
-                var values = new List<KeyValuePair<string, string>>();
-                values.Add(new KeyValuePair<string, string>("grant_type", "password"));
-                values.Add(new KeyValuePair<string, string>("username", _apiCredentials.username));
-                values.Add(new KeyValuePair<string, string>("password", _apiCredentials.password));
-                var content = new FormUrlEncodedContent(values);
-
+                ApiRequestContent content = new ApiRequestContent();
+                content.Add("grant_type", "password");
+                content.Add("username", _apiCredentials.username);
+                content.Add("password", _apiCredentials.password);
 
                 string clientId = "hw8zbkPFGguiVQ";
                 string clientSecret = "dH9be6KM24Ki5PJ_xcg3agqksX9KsQ";
-                var authenticationString = $"{clientId}:{clientSecret}";
-                var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(authenticationString));
+                string authenticationString = $"{clientId}:{clientSecret}";
+                string base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(authenticationString));
 
-                var requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://www.reddit.com/api/v1/access_token");
+                HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://www.reddit.com/api/v1/access_token");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
-                requestMessage.Content = content;
+                requestMessage.Content = content.Export();
 
                 //make the request
-                var task = client.SendAsync(requestMessage);
-                var response = task.Result;
+                Task<HttpResponseMessage> task = client.SendAsync(requestMessage);
+                HttpResponseMessage response = task.Result;
                 response.EnsureSuccessStatusCode();
                 HttpContent responseBody = response.Content;
                 string jsonContent = responseBody.ReadAsStringAsync().Result;
@@ -71,18 +70,39 @@ namespace Seeker.ServerClasses
                 }
         }
 
-        public string GetRedditUserData(){
+        //class tools
+        private HttpClient InitialiseClient(){
             HttpClient client = _clientFactory.CreateClient();
-            var requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://oauth.reddit.com/api/v1/me");
-            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.GetAuthToken() );
             client.DefaultRequestHeaders.Add("User-Agent",  _apiCredentials.user_agent);
+            return client;
+        }
 
-            var task = client.SendAsync(requestMessage);
-            var response = task.Result;
+        private HttpRequestMessage PrepareGetRequest(string url){
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.GetAuthToken() );
+            return requestMessage;
+        }
+
+        private string ReturnResponseAsString(HttpResponseMessage response){
             //response.EnsureSuccessStatusCode();
             HttpContent responseBody = response.Content;
             string jsonContent = responseBody.ReadAsStringAsync().Result;
             return jsonContent;
+        }
+
+        //complete request response cycles
+        public string GetRedditUserData(){
+            HttpClient client = this.InitialiseClient();
+            HttpRequestMessage requestMessage = this.PrepareGetRequest("https://oauth.reddit.com/api/v1/me");
+            Task<HttpResponseMessage> task = client.SendAsync(requestMessage);
+            return this.ReturnResponseAsString(task.Result);
+        }
+
+        public string GetTestEndpoint(){
+            HttpClient client = this.InitialiseClient();
+            HttpRequestMessage requestMessage = this.PrepareGetRequest("https://oauth.reddit.com/api/trending_subreddits");
+            Task<HttpResponseMessage> task = client.SendAsync(requestMessage);
+            return this.ReturnResponseAsString(task.Result);
         }
     }
 }

@@ -35,5 +35,11 @@ namespace Seeker.Controllers
         public string GetRedditUserData(){
             return _redditApiClient.GetRedditUserData();
         }
+
+        [HttpGet]
+        [Route("test")]
+        public string GetTestEndpoint(){
+            return _redditApiClient.GetTestEndpoint();
+        }
     }
 }
