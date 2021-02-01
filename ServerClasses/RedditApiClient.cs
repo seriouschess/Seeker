@@ -77,7 +77,7 @@ namespace Seeker.ServerClasses
             return client;
         }
 
-        private HttpRequestMessage PrepareGetRequest(string url){
+        private HttpRequestMessage PrepareOAuthGetRequest(string url){
             HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.GetAuthToken() );
             return requestMessage;
@@ -93,14 +93,21 @@ namespace Seeker.ServerClasses
         //complete request response cycles
         public string GetRedditUserData(){
             HttpClient client = this.InitialiseClient();
-            HttpRequestMessage requestMessage = this.PrepareGetRequest("https://oauth.reddit.com/api/v1/me");
+            HttpRequestMessage requestMessage = this.PrepareOAuthGetRequest("https://oauth.reddit.com/api/v1/me");
             Task<HttpResponseMessage> task = client.SendAsync(requestMessage);
             return this.ReturnResponseAsString(task.Result);
         }
 
         public string GetTestEndpoint(){
-            HttpClient client = this.InitialiseClient();
-            HttpRequestMessage requestMessage = this.PrepareGetRequest("https://oauth.reddit.com/api/trending_subreddits");
+            HttpClient client = _clientFactory.CreateClient();
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, "https://reddit.com/r/allthingsprotoss.json");
+            Task<HttpResponseMessage> task = client.SendAsync(requestMessage);
+            return this.ReturnResponseAsString(task.Result);
+        }
+
+        public string PlanGetRequest(string get_url){
+            HttpClient client = _clientFactory.CreateClient();
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, $"https://reddit.com{get_url}");
             Task<HttpResponseMessage> task = client.SendAsync(requestMessage);
             return this.ReturnResponseAsString(task.Result);
         }
