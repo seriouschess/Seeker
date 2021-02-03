@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unit-testing", "unit-testing\unit-testing.csproj", "{B22F1B37-B769-4F5B-B3E9-F7A9E5DB09B5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seeker", "app\Seeker.csproj", "{04FA3A68-BB94-40FB-BE63-EE249DC299CB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "app.tests", "app.tests\app.tests.csproj", "{00EE1FB2-593E-4ED2-A7B9-FB232EE76DC2}"
