@@ -2,12 +2,13 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using app.ServerClasses;
 using Newtonsoft.Json;
 using Seeker.dtos;
 
 namespace Seeker.ServerClasses
 {
-    public class RedditApiClient
+    public class RedditApiClient: IRedditApiClient
     {
         private static string _token;
         //Assumed to require a refresh after 1 hour of requesting

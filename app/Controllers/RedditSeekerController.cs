@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+using app.ServerClasses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Seeker.Configuration;
-using Seeker.dtos;
 using Seeker.ServerClasses;
 
 namespace Seeker.Controllers
@@ -17,7 +14,7 @@ namespace Seeker.Controllers
     {
         private RedditApiServices _redditApiServices;
 
-        private Scanner _scanner = new Scanner();
+        private IScanner _scanner = new Scanner();
 
         private readonly ILogger<Redditseeker> _logger;
 

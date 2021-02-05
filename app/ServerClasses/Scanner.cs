@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using app.ServerClasses;
 
 namespace Seeker.ServerClasses
 {
-    public class Scanner
+    public class Scanner: IScanner
     {
         public Scanner(){
 

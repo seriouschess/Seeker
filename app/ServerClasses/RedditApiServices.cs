@@ -1,21 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
-using Newtonsoft.Json;
+using app.ServerClasses;
 using Newtonsoft.Json.Linq;
 
 namespace Seeker.ServerClasses
 {
     public class RedditApiServices
     {
-        private RedditApiClient _apiClient;
+        private IRedditApiClient _apiClient;
         public RedditApiServices(IHttpClientFactory clientFactory){
             _apiClient = new RedditApiClient(clientFactory);
         }
 
         //General Reddit
 
-        public dynamic GetSubreddit(string subreddit_string){
+        private dynamic GetSubreddit(string subreddit_string){
             string something = _apiClient.PlanGetRequest($"/r/{subreddit_string}.json");
             return JObject.Parse(something); //just sinful
         }

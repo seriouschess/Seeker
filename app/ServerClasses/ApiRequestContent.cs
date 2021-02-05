@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Net.Http;
+using app.ServerClasses;
 
 namespace Seeker.ServerClasses
 {
-    public class ApiRequestContent
+    public class ApiRequestContent: IApiRequestContent
     {
         private List<KeyValuePair<string,string>> _contentValues;
         public ApiRequestContent(){
