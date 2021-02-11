@@ -9,7 +9,7 @@ using Seeker.ServerClasses;
 namespace Seeker.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class Redditseeker : ControllerBase
     {
         private RedditApiServices _redditApiServices;
