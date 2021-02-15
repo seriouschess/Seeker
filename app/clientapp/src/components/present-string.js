@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { ApiClient } from '../services/api-client.js';
 
 export class PresentString extends Component {
-  static displayName = PresentString.name;
 
   constructor(props) {
     super(props);
@@ -13,6 +12,7 @@ export class PresentString extends Component {
   }
 
   componentDidMount() {
+    this._client = new ApiClient();
     this.getFromReddit();
   }
 
@@ -37,9 +37,7 @@ export class PresentString extends Component {
   }
 
   async getFromReddit() {
-    axios.get('api/redditseeker/subreddit/allthingsprotoss').then( res => {
-      const data = res.data;
-      this.setState({ reddit:data, loading: false });
-    });
+    const data = await this._client.getFromReddit();
+    this.setState({ reddit: data, loading: false });
   }
 }
