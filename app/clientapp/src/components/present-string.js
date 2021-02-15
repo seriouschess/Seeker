@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 export class PresentString extends Component {
   static displayName = PresentString.name;
@@ -36,10 +37,9 @@ export class PresentString extends Component {
   }
 
   async getFromReddit() {
-    const response = await fetch('api/redditseeker/subreddit/allthingsprotoss');
-    const data = await response.text();
-    console.log(data);
-    console.log(typeof(data));
-    this.setState({ reddit:data, loading: false });
+    axios.get('api/redditseeker/subreddit/allthingsprotoss').then( res => {
+      const data = res.data;
+      this.setState({ reddit:data, loading: false });
+    });
   }
 }
