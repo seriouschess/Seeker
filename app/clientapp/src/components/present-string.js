@@ -7,7 +7,8 @@ export class PresentString extends Component {
     super(props);
     this.state = { 
         reddit: "", 
-        loading: true 
+        loading: true,
+        input_subreddit: props.input_subreddit
     };
   }
 
@@ -29,6 +30,7 @@ export class PresentString extends Component {
 
     return (
       <div>
+        <h1> Props: {this.state.input_subreddit} </h1>
         <h1 id="tabelLabel" >Reddit Seeker</h1>
         <p>I really hope this works</p>
         {contents}
@@ -37,7 +39,7 @@ export class PresentString extends Component {
   }
 
   async getFromReddit() {
-    const data = await this._client.getFromReddit();
+    const data = await this._client.getFromReddit(this.state.input_subreddit);
     this.setState({ reddit: data, loading: false });
   }
 }
