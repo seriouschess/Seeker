@@ -48,19 +48,17 @@ namespace Seeker.Controllers
         }
 
         [HttpGet]
-        [Route("scan/{subreddit_name}")]
-        public ActionResult<double> ScanSubreddit( string subreddit_name ){
-            string content_string = _redditApiServices.GetSubredditString(subreddit_name);
-            List<string> keywords = new List<string>(){
-                "colossus",
-                "stalker",
-                "immortal",
-                "zealot",
-                "archon",
-                "templar",
-                "gateway"
-            };
-            return _scanner.ScanString(content_string, keywords);
+        [Route("scan")]
+        public ActionResult<double> ScanSubreddit( [FromBody] ScanOrder order ){
+            System.Console.WriteLine(order.keywords);
+            System.Console.WriteLine($"Order {order.subreddit_name}");
+            string content_string = _redditApiServices.GetSubredditString( order.subreddit_name );
+            return _scanner.ScanString(content_string, order.keywords);
         }
+    }
+
+    public class ScanOrder{
+        public List<string> keywords {get;set;}
+        public string subreddit_name{get;set;}
     }
 }
