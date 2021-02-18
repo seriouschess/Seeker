@@ -51,6 +51,6 @@ export class PresentString extends Component {
       ["stalker", "zealot", "David Kim", "colossus", "influx"]
     );
     this.setState({scan_percentage: data});
-    this.forceUpdate();
+    //this.forceUpdate();
   }
 }
