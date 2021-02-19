@@ -48,9 +48,8 @@ export class PresentString extends Component {
   async scanSubreddit(){
     const data = await this._client.scanSubreddit(
       this.state.input_subreddit, 
-      ["stalker", "zealot", "David Kim", "colossus", "influx"]
+      this.props.keywordList
     );
     this.setState({scan_percentage: data});
-    //this.forceUpdate();
   }
 }

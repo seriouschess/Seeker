@@ -50,8 +50,6 @@ namespace Seeker.Controllers
         [HttpPost]
         [Route("scan")]
         public ActionResult<double> ScanSubreddit( [FromBody] ScanOrder order ){
-            System.Console.WriteLine(order.keywords);
-            System.Console.WriteLine($"Order {order.subreddit_name}");
             string content_string = _redditApiServices.GetSubredditString( order.subreddit_name );
             return _scanner.ScanString(content_string, order.keywords);
         }

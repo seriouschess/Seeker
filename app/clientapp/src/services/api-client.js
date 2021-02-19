@@ -11,20 +11,15 @@ export class ApiClient {
           return data;
     }
 
-    async scanSubreddit(subreddit_param, keywords_param) {
-        console.log(subreddit_param);
-        console.log(keywords_param);        
+    async scanSubreddit(subreddit_param, keywords_param) {       
         const data = await axios.post('api/redditseeker/scan',{
             keywords: keywords_param,
             subreddit_name: subreddit_param
         })
             .then(function (res) {
-                console.log(res.data);
                 return res.data;
             })
-            .catch(function (error) {
-                console.log(error);
-                console.log(error.response);                
+            .catch(function (error) {              
                 return error
             });
         return data;
