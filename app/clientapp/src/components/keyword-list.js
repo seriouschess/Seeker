@@ -1,8 +1,10 @@
 import React from 'react';
 export class KeywordListComponent extends React.Component{
+
     constructor(props){
         super(props);
         this.state = {
+            test_value:"please work",
             keyword_list:[],
             keywordCallback: props.keywordCallback,
             add_keyword_enabled: false,
@@ -12,9 +14,11 @@ export class KeywordListComponent extends React.Component{
         this.pushKeywordToList = this.pushKeywordToList.bind(this);
         this.updateKeywordList = this.updateKeywordList.bind(this);
         this.updateEnteredKeyword = this.updateEnteredKeyword.bind(this);
+        this.toggleKeywordAdditionForm = this.toggleKeywordAdditionForm.bind(this);
     }
 
-    componentDidMount(){}
+    componentDidMount(){
+    }
 
     updateKeywordList(event){
         this.setState({ keyword_list: event.target.keyword_list });
@@ -28,13 +32,14 @@ export class KeywordListComponent extends React.Component{
         event.preventDefault();
         let local_keyword_list =  this.state.keyword_list;
         local_keyword_list.push( this.state.entered_keyword );
-        this.state.keyword_list = local_keyword_list;
-        console.log("For Child: "+this.state.keyword_list);
         this.props.onKeywordListUpdate(this.state.keyword_list, this.props.myParent);
-        this.forceUpdate();
+        console.log("Keyword List: "+this.state.keyword_list);
+        this.setState( { keyword_list: local_keyword_list } );
+        this.toggleKeywordAdditionForm();
     }
 
-    toggleKeywordAdditionForm(){
+    toggleKeywordAdditionForm()
+    {
         this.setState({ add_keyword_enabled: !this.state.add_keyword_enabled });
     }
 
@@ -48,9 +53,8 @@ export class KeywordListComponent extends React.Component{
         let submission_button = <></>;
         let keyword_reset_option = <></>;
 
-        if( this.state.add_word_enabled == true ){
-            submission_button = <></>;//<p>Add a keyword: <button onClick={ this.toggleKeywordAdditionForm }>ADD</button></p>;
-
+        if( this.state.add_keyword_enabled == false ){
+            submission_button = <div><p>Add a keyword:</p> <button onClick={ this.toggleKeywordAdditionForm }>ADD</button></div>;
         }else{
             submission_button =
             <form>
@@ -62,14 +66,15 @@ export class KeywordListComponent extends React.Component{
         if( this.state.keyword_list.Length > 0 ){
             keyword_reset_option = <p> Reset all keywords: <button onClick={ this.resetKeywordList }>HERE</button> </p>;
         }
-        
         return (
             <div>
                 <h1> Keywords! </h1>
-                <p onChange={ this.updateKeywordList }> { this.state.keyword_list } </p>
+                <p onChange={ this.updateKeywordList }> Current Keywords: { this.state.keyword_list } </p>
                 { submission_button }
                 { keyword_reset_option }
             </div>    
         );
     }
 }
+
+

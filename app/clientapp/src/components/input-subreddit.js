@@ -6,7 +6,6 @@ export class InputSubredditComponent extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            value: 'Enter a subreddit string',
             entered_string:"",
             keyword_list:[]
         };
@@ -31,7 +30,9 @@ export class InputSubredditComponent extends React.Component{
     }
 
     getKeywordList(keyword_list_param, me){
+        console.log("Parent's Keyword List"+keyword_list_param);
         me.setState({keyword_list:keyword_list_param});
+        me.forceUpdate();
     }
 
     render(){
@@ -48,9 +49,9 @@ export class InputSubredditComponent extends React.Component{
         return(
             <div>
                 <p>{this.state.value}</p>
+                <p>Current Keywords: { this.state.keyword_list }</p>
                 {keyword_entry_form}
                 <p>Enter a subreddit to search:</p>
-                <p>Current Keywords: { this.state.keyword_list }</p>
                 <form>
 
                 <input value={this.state.value} onChange={this.handleChange} type="text" />
