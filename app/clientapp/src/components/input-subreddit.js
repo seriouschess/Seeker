@@ -20,18 +20,21 @@ export class InputSubredditComponent extends React.Component{
 
     handleChange(event){
         this.state.entered_string = "";
-        this.setState({value: event.target.value});
     }
+
+    handleKeywordChange(event){
+        this.setState( { keyword_list:event.keyword_list } );
+    }
+
 
     handleSubmit(event){
         event.preventDefault();
-        this.state.entered_string = this.state.value;
-        this.forceUpdate();
+        this.setState({entered_string:this.state.value});
     }
 
     getKeywordList(keyword_list_param, me){
         console.log("Parent's Keyword List"+keyword_list_param);
-        me.setState({keyword_list:keyword_list_param});
+        me.setState( {keyword_list:keyword_list_param} );
         me.forceUpdate();
     }
 
@@ -49,9 +52,15 @@ export class InputSubredditComponent extends React.Component{
         return(
             <div>
                 <p>{this.state.value}</p>
-                <p>Current Keywords: { this.state.keyword_list }</p>
+                <p>Current Keywords:</p>
+                <div>
+                    {this.state.keyword_list.map(keyword => (
+                        <span key={keyword}>{keyword} </span>
+                    ))}
+                </div>
                 {keyword_entry_form}
                 <p>Enter a subreddit to search:</p>
+
                 <form>
 
                 <input value={this.state.value} onChange={this.handleChange} type="text" />

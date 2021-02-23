@@ -32,7 +32,7 @@ export class KeywordListComponent extends React.Component{
         event.preventDefault();
         let local_keyword_list =  this.state.keyword_list;
         local_keyword_list.push( this.state.entered_keyword );
-        this.props.onKeywordListUpdate(this.state.keyword_list, this.props.myParent);
+        this.props.onKeywordListUpdate(local_keyword_list, this.props.myParent);
         console.log("Keyword List: "+this.state.keyword_list);
         this.setState( { keyword_list: local_keyword_list } );
         this.toggleKeywordAdditionForm();
@@ -68,8 +68,6 @@ export class KeywordListComponent extends React.Component{
         }
         return (
             <div>
-                <h1> Keywords! </h1>
-                <p onChange={ this.updateKeywordList }> Current Keywords: { this.state.keyword_list } </p>
                 { submission_button }
                 { keyword_reset_option }
             </div>    

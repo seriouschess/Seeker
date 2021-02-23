@@ -23,7 +23,6 @@ namespace Seeker.ServerClasses
                 if(reading_word == false && current_letter !=  ' '){
                     reading_word = true;
                     word_count += 1;
-                    System.Console.WriteLine("new word");
                 }
 
                 if( current_letter == ' ' ){
