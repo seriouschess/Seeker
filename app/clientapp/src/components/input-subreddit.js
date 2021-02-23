@@ -6,6 +6,7 @@ export class InputSubredditComponent extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            submitted:false,
             entered_string:"",
             keyword_list:[]
         };
@@ -19,7 +20,7 @@ export class InputSubredditComponent extends React.Component{
     }
 
     handleChange(event){
-        this.state.entered_string = "";
+        this.setState( { entered_string:event.target.value } );
     }
 
     handleKeywordChange(event){
@@ -29,20 +30,18 @@ export class InputSubredditComponent extends React.Component{
 
     handleSubmit(event){
         event.preventDefault();
-        this.setState({entered_string:this.state.value});
+        this.setState({ submitted:true });
     }
 
     getKeywordList(keyword_list_param, me){
-        console.log("Parent's Keyword List"+keyword_list_param);
         me.setState( {keyword_list:keyword_list_param} );
-        me.forceUpdate();
     }
 
     render(){
         let presentation;
         let keyword_entry_form;
 
-        if(this.state.entered_string != ""){
+        if(this.state.submitted == true){
             presentation = <PresentString keywordList={this.state.keyword_list} input_subreddit={ this.state.entered_string }/>;
             keyword_entry_form = <></>;
         }else{
@@ -51,7 +50,6 @@ export class InputSubredditComponent extends React.Component{
         }
         return(
             <div>
-                <p>{this.state.value}</p>
                 <p>Current Keywords:</p>
                 <div>
                     {this.state.keyword_list.map(keyword => (
@@ -63,7 +61,7 @@ export class InputSubredditComponent extends React.Component{
 
                 <form>
 
-                <input value={this.state.value} onChange={this.handleChange} type="text" />
+                <input value={this.state.entered_string} onChange={this.handleChange} type="text" />
                 <input type="submit" value="Submit" onClick={this.handleSubmit} />
                 {presentation}
 

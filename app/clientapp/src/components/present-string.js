@@ -46,6 +46,8 @@ export class PresentString extends Component {
   }
 
   async scanSubreddit(){
+    console.log(this.state.input_subreddit);
+    console.log(this.props.keywordList);
     const data = await this._client.scanSubreddit(
       this.state.input_subreddit, 
       this.props.keywordList
