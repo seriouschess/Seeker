@@ -40,7 +40,7 @@ export class KeywordListComponent extends React.Component{
 
     toggleKeywordAdditionForm()
     {
-        this.setState({ add_keyword_enabled: !this.state.add_keyword_enabled });
+        this.setState({ add_keyword_enabled: !this.state.add_keyword_enabled, entered_keyword: "" });
     }
 
     resetKeywordList(){
