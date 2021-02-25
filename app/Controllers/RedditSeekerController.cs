@@ -51,8 +51,10 @@ namespace Seeker.Controllers
         [Route("scan")]
         public ActionResult<double> ScanSubreddit( [FromBody] ScanOrder order ){
             string content_string = _redditApiServices.GetSubredditString( order.subreddit_name );
+            System.Console.WriteLine(_scanner.ReturnMostFrequentKeyword(content_string));
             return _scanner.ScanString(content_string, order.keywords);
         }
+
     }
 
     public class ScanOrder{

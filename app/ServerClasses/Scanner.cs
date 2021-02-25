@@ -44,5 +44,42 @@ namespace Seeker.ServerClasses
             output_percentage = (double)flagged_keyword_count/word_count;
             return output_percentage;
         }
+
+        public string ReturnMostFrequentKeyword(string input_string){
+            string output_string = null;
+            bool found_one = false;
+            List<CandidateKeyword> CandidateKeywords = new List<CandidateKeyword>();
+            string[] words = input_string.Split(' ');
+            foreach(string word in words){
+                found_one = false;
+                foreach( CandidateKeyword candidate in CandidateKeywords ){
+                    if(candidate.word == word){
+                        candidate.found_count += 1;
+                        found_one = true;
+                        break;
+                    }
+                }
+                if(found_one == false){
+                    CandidateKeywords.Add(new CandidateKeyword(){
+                        word = word,
+                        found_count = 0
+                    });
+                }
+            }
+
+            int max_value = -1;
+            foreach(CandidateKeyword candidate in CandidateKeywords){
+                if(candidate.found_count > max_value){
+                    output_string = candidate.word;
+                }
+            }
+
+            return output_string;
+        }
+
+        class CandidateKeyword{
+            public string word{get;set;}
+            public int found_count{get;set;}
+        }
     }
 }
