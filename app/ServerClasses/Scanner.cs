@@ -5,8 +5,9 @@ namespace Seeker.ServerClasses
 {
     public class Scanner: IScanner
     {
+        private ILanguageFormatter _formatter;
         public Scanner(){
-
+            _formatter = new LanguageFormatter();
         }
 
         //returns a percentage that the keywords were featured in the content
@@ -52,8 +53,9 @@ namespace Seeker.ServerClasses
             string[] words = input_string.Split(' ');
             foreach(string word in words){
                 found_one = false;
+                string stripped_word = _formatter.StripPunctuation(word);
                 foreach( CandidateKeyword candidate in CandidateKeywords ){
-                    if(candidate.word == word){
+                    if(candidate.word == stripped_word){
                         candidate.found_count += 1;
                         found_one = true;
                         break;
@@ -61,8 +63,8 @@ namespace Seeker.ServerClasses
                 }
                 if(found_one == false){
                     CandidateKeywords.Add(new CandidateKeyword(){
-                        word = word,
-                        found_count = 0
+                        word = stripped_word,
+                        found_count = 1
                     });
                 }
             }
@@ -70,7 +72,9 @@ namespace Seeker.ServerClasses
             int max_value = -1;
             foreach(CandidateKeyword candidate in CandidateKeywords){
                 if(candidate.found_count > max_value){
+                    max_value = candidate.found_count;
                     output_string = candidate.word;
+                    System.Console.WriteLine($"Word: {candidate.word} Frequency: {candidate.found_count}");
                 }
             }
 
