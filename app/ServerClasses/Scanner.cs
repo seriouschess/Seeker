@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using app.ServerClasses;
+using app.ServerClasses.Interfaces;
 
 namespace Seeker.ServerClasses
 {

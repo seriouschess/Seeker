@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Net.Http;
-using app.ServerClasses;
+using app.ServerClasses.Interfaces;
 
 namespace Seeker.ServerClasses
 {

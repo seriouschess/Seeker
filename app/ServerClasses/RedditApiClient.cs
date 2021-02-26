@@ -2,7 +2,7 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using app.ServerClasses;
+using app.ServerClasses.Interfaces;
 using Newtonsoft.Json;
 using Seeker.dtos;
 

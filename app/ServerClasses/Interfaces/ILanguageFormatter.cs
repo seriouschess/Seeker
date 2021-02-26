@@ -1,4 +1,4 @@
-namespace app.ServerClasses
+namespace app.ServerClasses.Interfaces
 {
     public interface ILanguageFormatter
     {

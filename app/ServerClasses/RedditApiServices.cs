@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
-using app.ServerClasses;
+using app.ServerClasses.Interfaces;
 using Newtonsoft.Json.Linq;
 
 namespace Seeker.ServerClasses

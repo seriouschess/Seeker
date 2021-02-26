@@ -1,6 +1,6 @@
 using System.Net.Http;
 
-namespace app.ServerClasses
+namespace app.ServerClasses.Interfaces
 {
     public interface IApiRequestContent
     {

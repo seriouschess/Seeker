@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace app.ServerClasses
+namespace app.ServerClasses.Interfaces
 {
     public interface IScanner
     {
