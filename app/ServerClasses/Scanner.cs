@@ -54,7 +54,7 @@ namespace Seeker.ServerClasses
             string[] words = input_string.Split(' ');
             foreach(string word in words){
                 found_one = false;
-                string stripped_word = _formatter.StripPunctuation(word);
+                string stripped_word = _formatter.StripPunctuation(word).ToLower();
                 foreach( CandidateKeyword candidate in CandidateKeywords ){
                     if(candidate.word == stripped_word){
                         candidate.found_count += 1;
