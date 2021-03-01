@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using app.ServerClasses;
 using app.ServerClasses.Interfaces;
 
@@ -47,8 +48,12 @@ namespace Seeker.ServerClasses
             return output_percentage;
         }
 
-        public string ReturnMostFrequentKeyword(string input_string){
-            string output_string = null;
+        public List<string> ReturnMostFrequentKeywords(string input_string, int return_count = 1){
+            if(return_count < 1){
+                throw new System.ArgumentException("return_count parameter may not be less than a single item.");
+            }
+
+            List<string> output = new List<string>();
             bool found_one = false;
             List<CandidateKeyword> CandidateKeywords = new List<CandidateKeyword>();
             string[] words = input_string.Split(' ');
@@ -68,18 +73,39 @@ namespace Seeker.ServerClasses
                         found_count = 1
                     });
                 }
+                
             }
 
-            int max_value = -1;
+            List<CandidateKeyword> output_candidates = new List<CandidateKeyword>();
+            int minimum_candidate_count;
             foreach(CandidateKeyword candidate in CandidateKeywords){
-                if(candidate.found_count > max_value){
-                    max_value = candidate.found_count;
-                    output_string = candidate.word;
-                    System.Console.WriteLine($"Word: {candidate.word} Frequency: {candidate.found_count}");
+                if(output_candidates.Count > 0){
+                    minimum_candidate_count = output_candidates.Min(x => x.found_count);
+                    if(candidate.found_count >= minimum_candidate_count || output_candidates.Count == 0){ //higher frequency keyword found
+                        if(output_candidates.Count >= return_count ){
+                            output_candidates.RemoveAt(output_candidates.FindIndex( x => x.found_count == minimum_candidate_count));
+                            //lowest_three[lowest_three.IndexOf(lowest_three.Max())] 
+                        }
+                        output_candidates.Add( new CandidateKeyword(){
+                            word = candidate.word,
+                            found_count = candidate.found_count
+                        });
+                        System.Console.WriteLine($"Word: {candidate.word} Frequency: {candidate.found_count}");
+                    }
+                }else{
+                    output_candidates.Add( new CandidateKeyword(){ //return count must be at least 1
+                            word = candidate.word,
+                            found_count = candidate.found_count
+                        });
                 }
             }
 
-            return output_string;
+            output = new List<string>();
+            foreach(CandidateKeyword keyword in output_candidates){
+                output.Add(keyword.word);
+            }
+
+            return output;
         }
 
         class CandidateKeyword{

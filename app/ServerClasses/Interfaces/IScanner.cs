@@ -5,6 +5,6 @@ namespace app.ServerClasses.Interfaces
     public interface IScanner
     {
         double ScanString(string content, List<string> keywords); 
-        string ReturnMostFrequentKeyword(string content);
+        List<string> ReturnMostFrequentKeywords(string content, int return_count = 1);
     }
 }
