@@ -40,13 +40,13 @@ namespace app.tests
         [Test]
         public void TestWordFinderTestOne(){
             string content = "The cat in the hat had sat on a mat.";
-            Assert.AreEqual( "the", _scannerModule.ReturnMostFrequentKeyword(content) );
+            Assert.AreEqual( "the", _scannerModule.ReturnMostFrequentKeywords(content) );
         }
 
         [Test]
         public void WordFinderTestTwo(){
             string content = "Horse. Plane Car chicken train ;horse;";
-            Assert.AreEqual( "horse", _scannerModule.ReturnMostFrequentKeyword(content) );
+            Assert.AreEqual( "horse", _scannerModule.ReturnMostFrequentKeywords(content) );
         }
     }
 }

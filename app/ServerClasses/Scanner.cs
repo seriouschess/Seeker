@@ -81,7 +81,9 @@ namespace Seeker.ServerClasses
             foreach(CandidateKeyword candidate in CandidateKeywords){
                 if(output_candidates.Count > 0){
                     minimum_candidate_count = output_candidates.Min(x => x.found_count);
-                    if(candidate.found_count >= minimum_candidate_count || output_candidates.Count == 0){ //higher frequency keyword found
+
+                    //higher frequency keyword found that is also not a common word
+                    if((candidate.found_count >= minimum_candidate_count || output_candidates.Count == 0) && _formatter.NotAnArticle(candidate.word)){ 
                         if(output_candidates.Count >= return_count ){
                             output_candidates.RemoveAt(output_candidates.FindIndex( x => x.found_count == minimum_candidate_count));
                             //lowest_three[lowest_three.IndexOf(lowest_three.Max())] 
@@ -92,6 +94,7 @@ namespace Seeker.ServerClasses
                         });
                         System.Console.WriteLine($"Word: {candidate.word} Frequency: {candidate.found_count}");
                     }
+                    
                 }else{
                     output_candidates.Add( new CandidateKeyword(){ //return count must be at least 1
                             word = candidate.word,
