@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using app.dtos;
 using app.ServerClasses.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -49,13 +50,15 @@ namespace Seeker.Controllers
 
         [HttpPost]
         [Route("scan")]
-        public ActionResult<double> ScanSubreddit( [FromBody] ScanOrder order ){
+        public ActionResult<ScanReport> ScanSubreddit( [FromBody] ScanOrder order ){
             string content_string = _redditApiServices.GetSubredditString( order.subreddit_name );
-            foreach(string string_item in _scanner.ReturnMostFrequentKeywords(content_string,5)){
-                System.Console.WriteLine(string_item);
-            }
+
+            ScanReport output = new ScanReport{
+                keyword_match_percentage = _scanner.ScanString(content_string, order.keywords),
+                most_popular_words = _scanner.ReturnMostFrequentKeywords(content_string,5)
+            };
             
-            return _scanner.ScanString(content_string, order.keywords);
+            return output;
         }
 
     }

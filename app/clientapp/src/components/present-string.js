@@ -8,6 +8,7 @@ export class PresentString extends Component {
     this.state = { 
         reddit: "",
         scan_percentage: null, 
+        most_frequent_keywords: [],
         loading: true,
         input_subreddit: props.input_subreddit
     };
@@ -35,6 +36,10 @@ export class PresentString extends Component {
         <h1> Props: {this.state.input_subreddit} </h1>
         <h1 id="tabelLabel" >Reddit Seeker</h1>
         <p>Keywords scanned percentage: {this.state.scan_percentage}</p>
+        <p>Most Frequent Keywords: {this.state.most_frequent_keywords.map(keyword => (
+            <span key={keyword}>{keyword} </span>
+        ))}</p>
+        
         {contents}
       </div>
     );
@@ -52,6 +57,10 @@ export class PresentString extends Component {
       this.state.input_subreddit, 
       this.props.keywordList
     );
-    this.setState({scan_percentage: data});
+    console.log(data);
+    this.setState({ 
+       most_frequent_keywords: data.most_popular_words,
+       scan_percentage: data.keyword_match_percentage
+      });
   }
 }
