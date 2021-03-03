@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { ApiClient } from '../services/api-client.js';
+import { RemoveCommonKeywordsComponent } from './remove-common-keyword';
 
-export class PresentString extends Component {
+export class GetRedditReport extends Component {
 
   constructor(props) {
     super(props);
     this.state = { 
         reddit: "",
         scan_percentage: null, 
-        most_frequent_keywords: [],
+        most_frequent_keywords: ["not a real keyword"],
         loading: true,
         input_subreddit: props.input_subreddit
     };
@@ -27,19 +28,23 @@ export class PresentString extends Component {
   }
 
   render() {
+
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : PresentString.renderRedditTable(this.state.reddit);
+      : GetRedditReport.renderRedditTable(this.state.reddit);
 
     return (
       <div>
         <h1> Props: {this.state.input_subreddit} </h1>
         <h1 id="tabelLabel" >Reddit Seeker</h1>
         <p>Keywords scanned percentage: {this.state.scan_percentage}</p>
-        <p>Most Frequent Keywords: {this.state.most_frequent_keywords.map(keyword => (
-            <span key={keyword}>{keyword} </span>
-        ))}</p>
-        
+
+        {/* This does not change properly on state change */}
+        <RemoveCommonKeywordsComponent found_keywords={this.state.most_frequent_keywords} />
+
+        {/* This changes properly on state change */}
+        <p>{this.state.most_frequent_keywords}</p>
+
         {contents}
       </div>
     );
@@ -51,16 +56,14 @@ export class PresentString extends Component {
   }
 
   async scanSubreddit(){
-    console.log(this.state.input_subreddit);
-    console.log(this.props.keywordList);
     const data = await this._client.scanSubreddit(
       this.state.input_subreddit, 
       this.props.keywordList
     );
-    console.log(data);
     this.setState({ 
        most_frequent_keywords: data.most_popular_words,
        scan_percentage: data.keyword_match_percentage
       });
+    console.log("Async Retrieved Keywords: "+data.most_popular_words);
   }
 }

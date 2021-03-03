@@ -4,7 +4,6 @@ export class KeywordListComponent extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            test_value:"please work",
             keyword_list:[],
             keywordCallback: props.keywordCallback,
             add_keyword_enabled: false,

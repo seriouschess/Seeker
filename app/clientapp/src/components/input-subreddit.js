@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { PresentString } from './present-string.js';
+import { GetRedditReport } from './get-reddit-report.js';
 import { KeywordListComponent } from './keyword-list.js';
 
 export class InputSubredditComponent extends React.Component{
@@ -42,7 +42,7 @@ export class InputSubredditComponent extends React.Component{
         let keyword_entry_form;
 
         if(this.state.submitted == true){
-            presentation = <PresentString keywordList={this.state.keyword_list} input_subreddit={ this.state.entered_string }/>;
+            presentation = <GetRedditReport keywordList={this.state.keyword_list} input_subreddit={ this.state.entered_string }/>;
             keyword_entry_form = <></>;
         }else{
             presentation = <></>;
@@ -63,9 +63,10 @@ export class InputSubredditComponent extends React.Component{
 
                 <input value={this.state.entered_string} onChange={this.handleChange} type="text" />
                 <input type="submit" value="Submit" onClick={this.handleSubmit} />
-                {presentation}
 
                 </form>
+                
+                {presentation}
             </div>
         );
     }

@@ -1,19 +1,17 @@
 import './App.css';
-import { PresentString } from './components/present-string.js';
+import { GetRedditReport } from './components/get-reddit-report.js';
 import { InputSubredditComponent } from './components/input-subreddit.js';
-
 
 function App() {
   return (
     <div>
       <header>
         <InputSubredditComponent />
-        {/* <PresentString /> */}
+        {/* <GetRedditReport /> */}
       </header>
     </div>
   );
 }
-
 
 
 export default App;
