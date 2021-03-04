@@ -24,4 +24,12 @@ export class ApiClient {
             });
         return data;
     }
+
+    //post
+    async addCommonKeyword(new_common_word){
+        const data = await axios.post( 'api/redditseeker/addcommon/'+new_common_word).then( res => {
+            return res.data;
+        });
+        return data;
+    }
 }

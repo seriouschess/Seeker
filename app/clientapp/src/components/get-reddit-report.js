@@ -16,7 +16,7 @@ export class GetRedditReport extends Component {
   }
 
   componentDidMount() {
-    this._client = new ApiClient();
+    this._apiClient = new ApiClient();
     this.getFromReddit();
     this.scanSubreddit();
   }
@@ -39,10 +39,8 @@ export class GetRedditReport extends Component {
         <h1 id="tabelLabel" >Reddit Seeker</h1>
         <p>Keywords scanned percentage: {this.state.scan_percentage}</p>
 
-        {/* This does not change properly on state change */}
         <RemoveCommonKeywordsComponent found_keywords={this.state.most_frequent_keywords} />
 
-        {/* This changes properly on state change */}
         <p>{this.state.most_frequent_keywords}</p>
 
         {contents}
@@ -51,12 +49,12 @@ export class GetRedditReport extends Component {
   }
 
   async getFromReddit() {
-    const data = await this._client.getFromReddit(this.state.input_subreddit);
+    const data = await this._apiClient.getFromReddit(this.state.input_subreddit);
     this.setState({ reddit: data, loading: false });
   }
 
   async scanSubreddit(){
-    const data = await this._client.scanSubreddit(
+    const data = await this._apiClient.scanSubreddit(
       this.state.input_subreddit, 
       this.props.keywordList
     );
