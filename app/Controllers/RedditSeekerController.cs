@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 using System.IO;
 using System.Text;
 using System.Net.Http;
@@ -66,59 +67,56 @@ namespace Seeker.Controllers
         [HttpPost]
         [Route("addcommon/{word_to_add}")]
         public ActionResult<string> AddNewCommonWord(string word_to_add){
-            // Create a FileStream Object 
-            // to write to a text file 
-            // The parameters are complete  
-            // path of the text file in the  
-            // system, in Create mode, the 
-            // access to this process is  
-            // Write and for other  
-            // processes is None 
-            FileStream fWrite = new FileStream("testfile.txt", 
-                        FileMode.Create, FileAccess.Write, FileShare.None); 
-    
-            // Store the text in a byte array with 
-            // UTF8 encoding (8-bit Unicode  
-            // Transformation Format) 
-            byte[] writeArr = Encoding.UTF8.GetBytes(word_to_add); 
-    
-            // Using the Write method write 
-            // the encoded byte array to 
-            // tword_to_addfile 
-            fWrite.Write(writeArr, 0, word_to_add.Length); 
-    
-            // Closee the FileStream object 
-            fWrite.Close(); 
-    
-            // Create a FileStream Object 
-            // to read from a text file 
-            // The parameters are complete 
-            // path of the text file in  
-            // the system, in Open mode, 
-            // the access to this process is 
-            // Read and for other processes 
-            // is Read as well 
-            FileStream fRead = new FileStream("testfile.txt",  
-                        FileMode.Open, FileAccess.Read, FileShare.Read); 
-    
-            // Create a byte array  
-            // to read from the  
-            // text file 
-            byte[] readArr = new byte[word_to_add.Length]; //little goofy using word_to_add here
-            int count; 
-    
-            // Using the Read method  
-            // read until end of file 
-            while ((count = fRead.Read(readArr, 0, readArr.Length)) > 0) { 
-                System.Console.WriteLine(Encoding.UTF8.GetString(readArr, 0, count)); 
-            } 
-    
-            // Close the FileStream Object 
-            fRead.Close(); 
-            System.Console.ReadKey(); 
+
+            string path = "testfile.txt";
+
+            // This text is added only once to the file.
+            if (!System.IO.File.Exists(path))
+            {
+                // Create a file to write to.
+                string[] createText = { word_to_add };
+                System.IO.File.WriteAllLines(path, createText);
+            }else{
+                System.IO.File.AppendAllText(path, word_to_add + Environment.NewLine); //writes the additional line to the file
+            }
+
+            // Open the System.IO.File to read from.
+            string[] readText = System.IO.File.ReadAllLines(path);
+            foreach (string s in readText)
+            {
+                Console.WriteLine(s);
+            }
+ 
+
             return word_to_add;
         }
+        
+        [HttpPost]
+        [Route("removecommon/{word_to_remove}")]
+        public ActionResult<string> RemoveNewCommonWord(string word_to_remove){
+
+                string[] lines = System.IO.File.ReadAllLines("testfile.txt");
+
+                // Write the new file over the old file.
+                using (StreamWriter writer = new StreamWriter("testfile.txt"))
+                {
+                    for (int currentLine = 1; currentLine <= lines.Length; ++currentLine)
+                    {
+                        if (lines[currentLine] == word_to_remove)
+                        {
+                            //do nothing :O
+                        }
+                        else
+                        {
+                            writer.WriteLine(lines[currentLine - 1]);
+                        }
+                    }
+                }
+
+                return $"Common word {word_to_remove} deleted";
+        }
     }
+
 
     public class ScanOrder{
         public List<string> keywords {get;set;}
