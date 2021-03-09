@@ -83,7 +83,7 @@ namespace Seeker.ServerClasses
                     minimum_candidate_count = output_candidates.Min(x => x.found_count);
 
                     //higher frequency keyword found that is also not a common word
-                    if((candidate.found_count >= minimum_candidate_count || output_candidates.Count == 0) && _formatter.NotAnArticle(candidate.word)){ 
+                    if((candidate.found_count >= minimum_candidate_count || output_candidates.Count == 0) && _formatter.NotACommonWord(candidate.word)){ 
                         if(output_candidates.Count >= return_count ){
                             output_candidates.RemoveAt(output_candidates.FindIndex( x => x.found_count == minimum_candidate_count));
                             //lowest_three[lowest_three.IndexOf(lowest_three.Max())] 

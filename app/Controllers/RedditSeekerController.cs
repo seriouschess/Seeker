@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.IO;
-using System.Text;
 using System.Net.Http;
-using System.Threading.Tasks;
 using app.dtos;
 using app.ServerClasses.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Seeker.ServerClasses;
+using app.ServerClasses;
 
 namespace Seeker.Controllers
 {
@@ -19,6 +18,8 @@ namespace Seeker.Controllers
         private RedditApiServices _redditApiServices;
 
         private IScanner _scanner = new Scanner();
+
+        private ILanguageFormatter _formatter = new LanguageFormatter();
 
         private readonly ILogger<Redditseeker> _logger;
 
@@ -58,7 +59,7 @@ namespace Seeker.Controllers
 
             ScanReport output = new ScanReport{
                 keyword_match_percentage = _scanner.ScanString(content_string, order.keywords),
-                most_popular_words = _scanner.ReturnMostFrequentKeywords(content_string,5)
+                most_popular_words = _scanner.ReturnMostFrequentKeywords(content_string,15)
             };
             
             return output;
@@ -67,27 +68,7 @@ namespace Seeker.Controllers
         [HttpPost]
         [Route("addcommon/{word_to_add}")]
         public ActionResult<string> AddNewCommonWord(string word_to_add){
-
-            string path = "testfile.txt";
-
-            // This text is added only once to the file.
-            if (!System.IO.File.Exists(path))
-            {
-                // Create a file to write to.
-                string[] createText = { word_to_add };
-                System.IO.File.WriteAllLines(path, createText);
-            }else{
-                System.IO.File.AppendAllText(path, word_to_add + Environment.NewLine); //writes the additional line to the file
-            }
-
-            // Open the System.IO.File to read from.
-            string[] readText = System.IO.File.ReadAllLines(path);
-            foreach (string s in readText)
-            {
-                Console.WriteLine(s);
-            }
- 
-
+            _formatter.AddCommonWord(word_to_add);
             return word_to_add;
         }
         
