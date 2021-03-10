@@ -76,36 +76,45 @@ namespace Seeker.ServerClasses
                 
             }
 
-            List<CandidateKeyword> output_candidates = new List<CandidateKeyword>();
-            int minimum_candidate_count;
-            foreach(CandidateKeyword candidate in CandidateKeywords){
-                if(output_candidates.Count > 0){
-                    minimum_candidate_count = output_candidates.Min(x => x.found_count);
 
-                    //higher frequency keyword found that is also not a common word
-                    if((candidate.found_count >= minimum_candidate_count || output_candidates.Count == 0) && _formatter.NotACommonWord(candidate.word)){ 
-                        if(output_candidates.Count >= return_count ){
-                            output_candidates.RemoveAt(output_candidates.FindIndex( x => x.found_count == minimum_candidate_count));
-                            //lowest_three[lowest_three.IndexOf(lowest_three.Max())] 
-                        }
-                        output_candidates.Add( new CandidateKeyword(){
-                            word = candidate.word,
-                            found_count = candidate.found_count
-                        });
-                        System.Console.WriteLine($"Word: {candidate.word} Frequency: {candidate.found_count}");
-                    }
+            List<CandidateKeyword> output_candidates = CandidateKeywords.OrderByDescending( x => x.found_count ).ToList();
+            //List<CandidateKeyword> output_candidates = new List<CandidateKeyword>();
+
+            //int minimum_candidate_count;
+
+            // foreach(CandidateKeyword candidate in CandidateKeywords){
+            //     System.Console.WriteLine($"Candidate count: {output_candidates.Count}");
+            //     if(output_candidates.Count > 0){
+            //         minimum_candidate_count = output_candidates.Min(x => x.found_count);
+
+            //         //higher frequency keyword found that is also not a common word
+            //         if((candidate.found_count >= minimum_candidate_count || output_candidates.Count == 0) && _formatter.NotACommonWord(candidate.word)){ 
+            //             if(output_candidates.Count >= return_count ){
+            //                 output_candidates.RemoveAt(output_candidates.FindIndex( x => x.found_count == minimum_candidate_count));
+            //             }
+            //             output_candidates.Add( new CandidateKeyword(){
+            //                 word = candidate.word,
+            //                 found_count = candidate.found_count
+            //             });
+            //             System.Console.WriteLine($"Word: {candidate.word} Frequency: {candidate.found_count}");
+            //         }
                     
-                }else{
-                    output_candidates.Add( new CandidateKeyword(){ //return count must be at least 1
-                            word = candidate.word,
-                            found_count = candidate.found_count
-                        });
-                }
-            }
+            //     }else{
+            //         output_candidates.Add( new CandidateKeyword(){ //return count must be at least 1
+            //                 word = candidate.word,
+            //                 found_count = candidate.found_count
+            //             });
+            //     }
+            // }
 
             output = new List<string>();
+            int output_count = 0;
             foreach(CandidateKeyword keyword in output_candidates){
-                output.Add(keyword.word);
+                if(output_count < return_count && _formatter.NotACommonWord(keyword.word)){
+                    output.Add(keyword.word);
+                    output_count += 1;
+                }
+                System.Console.WriteLine($"Word: {keyword.word} Frequency: {keyword.found_count}");
             }
 
             return output;
