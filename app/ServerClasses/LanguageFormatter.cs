@@ -33,6 +33,12 @@ namespace app.ServerClasses
             //to lower is important. All words in this file should be lowercase
             string new_word = StripPunctuation(word_to_add).ToLower();
 
+            foreach(string word in this.common_articles){
+                if(word == new_word){
+                    return; //end the function, word already exists in file
+                }
+            }
+
             // This text is added only once to the file.
             if (!System.IO.File.Exists(_commonFilePath))
             {

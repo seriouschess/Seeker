@@ -23,9 +23,12 @@ export class RemoveCommonKeywordsComponent extends React.Component{
         }
     }
 
-    async addToCommonWords(event){
-        console.log("Attempting to add "+this.state.found_keywords[event]);
-        let response = await this._apiClient.addCommonKeyword(this.state.found_keywords[event]);
+    async addToCommonWords(index){
+        console.log("Attempting to add "+this.state.found_keywords[index]);
+        let response = await this._apiClient.addCommonKeyword(this.state.found_keywords[index]);
+        let new_array = this.state.found_keywords;
+        new_array.splice( index, 1 );
+        this.setState( { found_keywords: new_array } );
         console.log("Got back "+response);
     }
 
