@@ -58,10 +58,12 @@ export class GetRedditReport extends Component {
       this.state.input_subreddit, 
       this.props.keywordList
     );
-    this.setState({ 
-       most_frequent_keywords: data.most_popular_words,
-       scan_percentage: data.keyword_match_percentage
-      });
-    console.log("Async Retrieved Keywords: "+data.most_popular_words);
+
+    if(!data.isAxiosError){
+      this.setState({ 
+         most_frequent_keywords: data.most_popular_words,
+         scan_percentage: data.keyword_match_percentage
+        });
+    }
   }
 }

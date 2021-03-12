@@ -19,7 +19,8 @@ export class ApiClient {
             .then(function (res) {
                 return res.data;
             })
-            .catch(function (error) {              
+            .catch(function (error) {
+                console.dir(error);         
                 return error
             });
         return data;
