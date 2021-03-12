@@ -10,6 +10,7 @@ export class GetRedditReport extends Component {
         reddit: "",
         scan_percentage: null, 
         most_frequent_keywords: ["not a real keyword"],
+        error_message:null,
         loading: true,
         input_subreddit: props.input_subreddit
     };
@@ -32,12 +33,19 @@ export class GetRedditReport extends Component {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
       : GetRedditReport.renderRedditTable(this.state.reddit);
+    
+    let errorbox = <></>;
+    if(this.state.error_message != null){
+      errorbox = <p> Error: {this.state.error_message} </p>;
+    }
 
     return (
       <div>
         <h1> Props: {this.state.input_subreddit} </h1>
         <h1 id="tabelLabel" >Reddit Seeker</h1>
         <p>Keywords scanned percentage: {this.state.scan_percentage}</p>
+
+        {errorbox}
 
         <RemoveCommonKeywordsComponent found_keywords={this.state.most_frequent_keywords} />
 
@@ -60,10 +68,16 @@ export class GetRedditReport extends Component {
     );
 
     if(!data.isAxiosError){
-      this.setState({ 
+      this.setState({
+         error_message: null, 
          most_frequent_keywords: data.most_popular_words,
          scan_percentage: data.keyword_match_percentage
         });
+    }else{
+      console.log("Error: "+ data.message);
+      this.setState({
+        error_message: data.message
+      });
     }
   }
 }
