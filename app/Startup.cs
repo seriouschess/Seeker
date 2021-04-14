@@ -1,8 +1,10 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
+using app.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,10 +15,12 @@ namespace Seeker
     public class Startup
     {
         public static HttpClient AppHttpClient {get;} = new HttpClient();
-        public Startup(IConfiguration configuration)
+        public IWebHostEnvironment _env { get; }
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
             ConfSettings.Configuration = Configuration;
+            _env = environment;
         }
 
         public IConfiguration Configuration { get; }
@@ -26,6 +30,17 @@ namespace Seeker
         {
             services.AddHttpClient();
             services.AddControllersWithViews();
+
+            string psqlConnection;
+            if(_env.IsDevelopment()){
+                psqlConnection = Configuration["LocalConnectionString"];
+            }else{
+                throw new System.ArgumentException("Production environment not yet setup. See Startup.cs for more details.");
+                //psqlConnection = Configuration["ProductionConnectionString"];
+            }
+
+            System.Console.WriteLine(psqlConnection);
+            services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(psqlConnection));
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
