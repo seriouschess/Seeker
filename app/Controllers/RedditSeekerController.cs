@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Seeker.ServerClasses;
 using app.ServerClasses;
+using app.Models;
 
 namespace Seeker.Controllers
 {
@@ -23,10 +24,13 @@ namespace Seeker.Controllers
 
         private readonly ILogger<Redditseeker> _logger;
 
-        public Redditseeker(ILogger<Redditseeker> logger, IHttpClientFactory clientFactory)
+        private DatabaseContext _dbContext;
+
+        public Redditseeker(ILogger<Redditseeker> logger, IHttpClientFactory clientFactory, DatabaseContext dbContext)
         {
             _logger = logger;
             _redditApiServices = new RedditApiServices(clientFactory);
+            _dbContext = dbContext;
         }
 
         [HttpGet]
@@ -61,6 +65,11 @@ namespace Seeker.Controllers
                 keyword_match_percentage = _scanner.ScanString(content_string, order.keywords),
                 most_popular_words = _scanner.ReturnMostFrequentKeywords(content_string,15)
             };
+
+            //temporary db action
+            _dbContext.Subreddits.Add(new Subreddit{
+                subreddit_name = order.subreddit_name
+            });
             
             return output;
         }
